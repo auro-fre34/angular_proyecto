@@ -1,76 +1,78 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { BaseService } from './base-service';
-import { IProduct, ISearch } from '../interfaces';
-import { AlertService } from './alert.service';
+import { IProduct } from '../interfaces';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductService extends BaseService<IProduct> {
     protected override source: string = 'products';
-    private productListSignal = signal<IProduct[]>([]);
+    private itemListSignal = signal<IProduct[]>([]);
+    private snackBar = inject(MatSnackBar);
 
-    get products$() {
-        return this.productListSignal;
+    get items$() {
+        return this.itemListSignal;
     }
 
-    public search: ISearch = {
-        page: 1,
-        size: 5
-    }
-
-    public totalItems: any = [];
-    private alertService: AlertService = inject(AlertService);
-
-    getAll() {
-        this.findAllWithParams({ page: this.search.page, size: this.search.size }).subscribe({
+    public getAll() {
+        this.findAll().subscribe({
             next: (response: any) => {
-                this.search = { ...this.search, ...response.meta };
-                this.totalItems = Array.from({ length: this.search.totalPages ? this.search.totalPages : 0 }, (_, i) => i + 1);
-                this.productListSignal.set(response.data);
+                response.reverse();
+                this.itemListSignal.set(response);
             },
-            error: (err: any) => {
-                console.error('error', err);
+            error: (error: any) => {
+                console.log('error', error);
             }
         });
     }
 
-    save(product: IProduct) {
-        this.add(product).subscribe({
+    public save(item: IProduct) {
+        this.add(item).subscribe({
             next: (response: any) => {
-                this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-                this.getAll();
+                this.itemListSignal.update((products: IProduct[]) => [response, ...products]);
             },
-            error: (err: any) => {
-                this.alertService.displayAlert('error', 'An error occurred adding the product', 'center', 'top', ['error-snackbar']);
-                console.error('error', err);
+            error: (error: any) => {
+                this.snackBar.open(error.error.description, 'Close', {
+                    horizontalPosition: 'right',
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar']
+                });
+                console.error('error', error);
             }
         });
     }
 
-    update(product: IProduct) {
-        this.edit(Number(product.id), product).subscribe({
-            next: (response: any) => {
-                this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-                this.getAll();
+    public update(item: IProduct) {
+        this.edit(item.id, item).subscribe({
+            next: () => {
+                const updatedItems = this.itemListSignal().map(product => product.id === item.id ? item : product);
+                this.itemListSignal.set(updatedItems);
             },
-            error: (err: any) => {
-                this.alertService.displayAlert('error', 'An error occurred updating the product', 'center', 'top', ['error-snackbar']);
-                console.error('error', err);
+            error: (error: any) => {
+                this.snackBar.open(error.error.description, 'Close', {
+                    horizontalPosition: 'right',
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar']
+                });
+                console.error('error', error);
             }
         });
     }
 
-
-    delete(product: IProduct) {
-        this.del(`${product.id}`).subscribe({
-            next: (response: any) => {
-                this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-                this.getAll();
+    public delete(product: IProduct) {
+        this.del(product.id).subscribe({
+            next: () => {
+                const updatedItems = this.itemListSignal().filter((p: IProduct) => p.id !== product.id);
+                this.itemListSignal.set(updatedItems);
             },
-            error: (err: any) => {
-                this.alertService.displayAlert('error', 'An error occurred deleting the product', 'center', 'top', ['error-snackbar']);
-                console.error('error', err);
+            error: (error: any) => {
+                this.snackBar.open(error.error.description, 'Close', {
+                    horizontalPosition: 'right',
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar']
+                });
+                console.error('error', error);
             }
         });
     }

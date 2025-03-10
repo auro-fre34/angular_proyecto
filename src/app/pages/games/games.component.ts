@@ -17,11 +17,11 @@ import { AuthService } from '../../services/auth.service';
     GamesListComponent,
     ModalComponent,
     GamesFormComponent
-    ],
+  ],
   templateUrl: './games.component.html',
   styleUrl: './games.component.scss'
 })
-export class GamesComponent implements OnInit{
+export class GamesComponent implements OnInit {
   public gameService: GameService = inject(GameService);
   public modalService: NgbModal = inject(NgbModal);
   public route: ActivatedRoute = inject(ActivatedRoute);
@@ -32,12 +32,12 @@ export class GamesComponent implements OnInit{
   ngOnInit(): void {
     this.authService.getUserAuthorities();
     this.gameService.getAll();
-    this.route.data.subscribe( data => {
+    this.route.data.subscribe(data => {
       this.areActionsAvailable = this.authService.areActionsAvailable(data['authorities'] ? data['authorities'] : []);
     });
   }
 
-  onFormEventCalled (params: IGame) {
+  onFormEventCalled(params: IGame) {
     this.gameService.save(params);
     this.modalService.dismissAll();
   }

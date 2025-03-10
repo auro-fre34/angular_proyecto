@@ -7,10 +7,10 @@ import { AlertService } from './alert.service';
     providedIn: 'root'
 })
 export class CategoryService extends BaseService<ICategory> {
-    protected override source: string = 'categories';
+    protected override source: string = 'category';
     private categoryListSignal = signal<ICategory[]>([]);
 
-    get categories$() {
+    get category$() {
         return this.categoryListSignal;
     }
 

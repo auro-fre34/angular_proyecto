@@ -1,55 +1,34 @@
-<form [formGroup]="productForm" class="row">
-    <div>
-        <h2 class="mb-0">Add Product</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <p>{{title}}</p>
+        </div>
+        <div class="col-6">
+            <input #name="ngModel" type="text" class="form-control" id="name" name="name" placeholder="Game name"
+                [(ngModel)]="toUpdateGame.name" [ngClass]="{ 
+            'is-invalid': name.invalid && name.touched,
+            'is-valid': name.valid && name.touched
+          }" required />
+        </div>
+        <div class="col-6">
+            <input #description="ngModel" type="text" class="form-control" id="description" name="description"
+                placeholder="Game description" [(ngModel)]="toUpdateGame.description" [ngClass]="{ 
+            'is-invalid': description.invalid && description.touched,
+            'is-valid': description.valid && description.touched
+          }" required />
+        </div>
+        <div class="col-6 mt-3">
+            <input #imgURL="ngModel" type="text" class="form-control" id="imgURL" name="imgURL"
+                placeholder="Game image url" [(ngModel)]="toUpdateGame.imgURL" [ngClass]="{ 
+            'is-invalid': imgURL.invalid && imgURL.touched,
+            'is-valid': imgURL.valid && imgURL.touched
+          }" required />
+        </div>
+        <div class="col-6 mt-3">
+            <button type="button" (click)="addEdit()" class="btn btn-primary d-flex align-items-center">
+                <i class="fa-solid fa-pencil white me-2"></i>
+                <p class="mb-0"> {{title}} </p>
+            </button>
+        </div>
     </div>
-
-    <div class="mb-2">
-        <label class="mb-1" for="name">Name*</label>
-        <input id="name" formControlName="name" type="text" class="form-control">
-        @if (productForm.controls['name'].invalid && (productForm.controls['name'].dirty ||
-        productForm.controls['name'].touched)) {
-        <p class="text-danger my-1">Name is required</p>
-        }
-    </div>
-
-    <div class="mb-2">
-        <label class="mb-1" for="description">Description*</label>
-        <input id="description" formControlName="description" type="text" class="form-control">
-        @if (productForm.controls['description'].invalid && (productForm.controls['description'].dirty ||
-        productForm.controls['description'].touched)) {
-        <p class="text-danger my-1">Description is required</p>
-        }
-    </div>
-
-    <div class="mb-2">
-        <label class="mb-1" for="price">Price*</label>
-        <input min="1" id="price" formControlName="price" type="number" class="form-control">
-        @if (productForm.controls['price'].invalid && (productForm.controls['price'].dirty ||
-        productForm.controls['price'].touched)) {
-        <p class="text-danger my-1">Price must be at least 1</p>
-        }
-    </div>
-
-    <div class="mb-2">
-        <label class="mb-1" for="stock">Stock*</label>
-        <input min="0" id="stock" formControlName="stock" type="number" class="form-control">
-        @if (productForm.controls['stock'].invalid && (productForm.controls['stock'].dirty ||
-        productForm.controls['stock'].touched)) {
-        <p class="text-danger my-1">Stock cannot be negative</p>
-        }
-    </div>
-
-    <div class="mb-2">
-        <label class="mb-1" for="category">Category*</label>
-        <input id="category" formControlName="category" type="text" class="form-control">
-        @if (productForm.controls['category'].invalid && (productForm.controls['category'].dirty ||
-        productForm.controls['category'].touched)) {
-        <p class="text-danger my-1">Category is required</p>
-        }
-    </div>
-
-    <div class="d-flex justify-content-end">
-        <button (click)="callSave()" [disabled]="productForm.invalid" class="btn btn-primary"
-            type="button">Save</button>
-    </div>
-</form>
+</div>
