@@ -19,7 +19,7 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
   templateUrl: './games-list.component.html',
   styleUrl: './games-list.component.scss'
 })
-export class GamesListComponent implements OnChanges{
+export class GamesListComponent implements OnChanges {
   @Input() itemList: IGame[] = [];
   @Input() areActionsAvailable: boolean = false;
   public selectedItem: IGame = {};
@@ -27,17 +27,17 @@ export class GamesListComponent implements OnChanges{
   public modalService = inject(NgbModal);
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['areActionsAvailable']) {
+    if (changes['areActionsAvailable']) {
       console.log('areActionsAvailable', this.areActionsAvailable);
     }
   }
 
-  showDetailModal(item: IGame, modal:any) {
-    this.selectedItem = {...item};
-    modal.show(); 
+  showDetailModal(item: IGame, modal: any) {
+    this.selectedItem = { ...item };
+    modal.show();
   }
 
-  onFormEventCalled (params: IGame) {
+  onFormEventCalled(params: IGame) {
     this.gameService.update(params);
     this.modalService.dismissAll();
   }

@@ -1,0 +1,17 @@
+<form class="row">
+    <div>
+        <h2 class="mb-0">{{ title }}</h2>
+    </div>
+    <div class="mb-2">
+        <label class="mb-1" for="name">Category Name*</label>
+        <input id="name" [(ngModel)]="toUpdateCategory.name" name="name" type="text" class="form-control" required>
+    </div>
+    <div class="mb-2">
+        <label class="mb-1" for="description">Description</label>
+        <input id="description" [(ngModel)]="toUpdateCategory.description" name="description" type="text"
+            class="form-control">
+    </div>
+    <div class="d-flex justify-content-end">
+        <button (click)="addEdit()" class="btn btn-primary" type="button">Save</button>
+    </div>
+</form>
