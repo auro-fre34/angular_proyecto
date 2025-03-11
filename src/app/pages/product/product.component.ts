@@ -1,14 +1,16 @@
-import { Component, OnInit, inject } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Component, ViewChild, inject } from "@angular/core";
 import { LoaderComponent } from "../../components/loader/loader.component";
-import { ModalComponent } from "../../components/modal/modal.component";
 import { PaginationComponent } from "../../components/pagination/pagination.component";
 import { ProductFormComponent } from "../../components/products/product-form/product-form.component";
 import { ProductListComponent } from "../../components/products/product-list/product-list.component";
 import { IProduct } from "../../interfaces";
 import { AuthService } from "../../services/auth.service";
 import { ProductService } from "../../services/products.service";
+import { FormBuilder, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { ModalService } from '../../services/modal.service';
+import { ModalComponent } from "../../components/modal/modal.component";
+
 
 @Component({
     selector: 'app-product',
@@ -19,32 +21,48 @@ import { ProductService } from "../../services/products.service";
         PaginationComponent,
         ModalComponent,
         LoaderComponent,
-        ProductFormComponent
+
     ],
     templateUrl: './product.component.html',
     styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent {
     public productService: ProductService = inject(ProductService);
-    public modalService: NgbModal = inject(NgbModal);
+    public modalService: ModalService = inject(ModalService);
     public route: ActivatedRoute = inject(ActivatedRoute);
     public authService: AuthService = inject(AuthService);
-    public routeAuthorities: string[] = [];
-    public areActionsAvailable: boolean = false;
+    @ViewChild('addProductModal') public addProductModal: any;
+    public fb: FormBuilder = inject(FormBuilder);
+    productForm = this.fb.group({
+        id: [''],
+        name: ['', Validators.required],
+        description: ['', Validators.required],
+        price: ['', Validators.required],
+        stock: ['', Validators.required],
 
-    ngOnInit(): void {
-        this.authService.getUserAuthorities();
-        this.productService.getAll();
-        this.route.data.subscribe(data => {
-            this.areActionsAvailable = this.authService.areActionsAvailable(data['authorities'] ? data['authorities'] : []);
-        });
-    }
-    openModal(content: any) {
-        this.modalService.open(content); // Pass the template reference to open
+    })
+    constructor() {
+        this.productService.search.page = 1;
+        this.authService.isSuperAdmin() ? this.productService.getAll() : this.productService.getAllByUser();
     }
 
-    onFormEventCalled(params: IProduct) {
-        this.productService.save(params);
-        this.modalService.dismissAll();
+    saveProduct(product: IProduct) {
+        this.productService.save(product);
+        this.modalService.closeAll();
+    }
+
+    callEdition(product: IProduct) {
+        this.productForm.controls['id'].setValue(product.id ? JSON.stringify(product.id) : '');
+        this.productForm.controls['name'].setValue(product.name ? (product.name) : '');
+        this.productForm.controls['description'].setValue(product.description ? product.description : '');
+        this.productForm.controls['price'].setValue(product.price ? JSON.stringify(product.price) : '');
+        this.productForm.controls['stock'].setValue(product.stock ? JSON.stringify(product.stock) : '');
+        this.modalService.displayModal('md', this.addProductModal);
+    }
+
+    updateProduct(product: IProduct) {
+        this.productService.update(product);
+        this.modalService.closeAll();
     }
 }
+

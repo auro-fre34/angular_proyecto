@@ -1,24 +1,39 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { IProduct } from '../../../interfaces';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss'
 })
 export class ProductFormComponent {
-  @Input() title: string = '';
-  @Input() toUpdateProduct: IProduct = {};
-  @Output() callParentEvent: EventEmitter<IProduct> = new EventEmitter<IProduct>();
+  public fb: FormBuilder = inject(FormBuilder);
+  @Input()
+  productForm!: FormGroup;
+  @Output() callSaveMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
+  @Output() callUpdateMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 
-  addEdit() {
-    this.callParentEvent.emit(this.toUpdateProduct);
+  callSave() {
+    let product: IProduct = {
+      name: this.productForm.controls['name'].value,
+      description: this.productForm.controls['description'].value,
+      price: this.productForm.controls['price'].value,
+      stock: this.productForm.controls['stock'].value,
+    }
+    if (this.productForm.controls['id'].value) {
+      product.id = this.productForm.controls['id'].value;
+
+    } if (product.id) {
+      this.callUpdateMethod.emit(product);
+    } else {
+      this.callSaveMethod.emit(product)
+    }
   }
 }
