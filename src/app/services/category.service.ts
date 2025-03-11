@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from './base-service';
 import { ICategory, ISearch } from '../interfaces';
 import { AlertService } from './alert.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +21,7 @@ export class CategoryService extends BaseService<ICategory> {
     }
 
     public totalItems: any = [];
+    private authService: AuthService = inject(AuthService);
     private alertService: AlertService = inject(AlertService);
 
     getAll() {
@@ -35,11 +37,24 @@ export class CategoryService extends BaseService<ICategory> {
         });
     }
 
+    getAllByUser() {
+        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/category`, { page: this.search.page, size: this.search.size }).subscribe({
+            next: (response: any) => {
+                this.search = { ...this.search, ...response.meta };
+                this.totalItems = Array.from({ length: this.search.totalPages ? this.search.totalPages : 0 }, (_, i) => i + 1);
+                this.categoryListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+            }
+        });
+    }
+
     save(category: ICategory) {
-        this.add(category).subscribe({
+        this.addCustomSource(`user/${this.authService.getUser()?.id}`, category).subscribe({
             next: (response: any) => {
                 this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-                this.getAll();
+                this.getAllByUser();
             },
             error: (err: any) => {
                 this.alertService.displayAlert('error', 'An error occurred adding the category', 'center', 'top', ['error-snackbar']);
@@ -49,7 +64,7 @@ export class CategoryService extends BaseService<ICategory> {
     }
 
     update(category: ICategory) {
-        this.edit(Number(category.id), category).subscribe({
+        this.editCustomSource(`${category.id}`, category).subscribe({
             next: (response: any) => {
                 this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
                 this.getAll();
@@ -62,10 +77,10 @@ export class CategoryService extends BaseService<ICategory> {
     }
 
     delete(category: ICategory) {
-        this.del(`${category.id}`).subscribe({
+        this.delCustomSource(`${category.id}`).subscribe({
             next: (response: any) => {
                 this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-                this.getAll();
+                this.getAllByUser();
             },
             error: (err: any) => {
                 this.alertService.displayAlert('error', 'An error occurred deleting the category', 'center', 'top', ['error-snackbar']);
