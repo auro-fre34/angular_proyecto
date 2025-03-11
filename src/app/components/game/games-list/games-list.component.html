@@ -12,24 +12,24 @@
       </tr>
     </thead>
     <tbody>
-      @for (product of productList; track $index) {
+      @for (item of itemList; track $index) {
       <tr>
-        <th scope="row">{{product.id}}</th>
-        <td>{{product.name}}</td>
-        <td>{{product.description}}</td>
-        <td>{{product.createdAt | date}}</td>
-        <td>{{product.updatedAt | date}}</td>
+        <th scope="row">{{item.id}}</th>
+        <td>{{item.name}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.createdAt | date}}</td>
+        <td>{{item.updatedAt | date}}</td>
         <td>
           <p class="text-white text-center" [ngClass]="{
-              'bg-info': product.status == 'active',
-              'bg-warning': product.status == 'disabled'
-              }">{{product.status}}</p>
+              'bg-info': item.status == 'active',
+              'bg-warning': item.status == 'disabled'
+              }">{{item.status}}</p>
         </td>
         <td>
-          <button type="button" (click)="showDetailModal(product, detailModal)" class="btn btn-secondary">
+          <button type="button" (click)="showDetailModal(item, detailModal)" class="btn btn-secondary">
             <i class="fa-solid fa-eye white"></i>
           </button>
-          <button type="button" (click)="deleteProduct(product)" class="btn btn-danger">
+          <button type="button" (click)="deleteGame(item)" class="btn btn-danger">
             <i class="fa-solid fa-trash white"></i>
           </button>
         </td>
@@ -40,6 +40,5 @@
 </div>
 
 <app-modal #detailModal>
-  <app-product-form (callParentEvent)="onFormEventCalled($event)" [title]="'Update Product'"
-    [toUpdateProduct]="selectedProduct" />
+  <app-games-form (callParentEvent)="onFormEventCalled($event)" [title]="'Update Game'" [toUpdateGame]="selectedItem" />
 </app-modal>

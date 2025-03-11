@@ -19,7 +19,7 @@
         }
     </div>
     <div class="mb-2">
-        <label class="mb-1" for="description">Price*</label>
+        <label class="mb-1" for="price">Price*</label>
         <input min="1" id="price" formControlName="price" type="number" class="form-control">
         @if (productForm.controls['price'].invalid && (productForm.controls['price'].dirty ||
         productForm.controls['price'].touched)) {
@@ -27,8 +27,8 @@
         }
     </div>
     <div class="mb-2">
-        <label class="mb-1" for="description">Stock*</label>
-        <input min="1" id="strock" formControlName="stock" type="number" class="form-control">
+        <label class="mb-1" for="Stock">Stock*</label>
+        <input min="1" id="stock" formControlName="stock" type="number" class="form-control">
         @if (productForm.controls['stock'].invalid && (productForm.controls['stock'].dirty ||
         productForm.controls['stock'].touched)) {
         <p class="text-danger my-1">Stock is required</p>

@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from "@angular/core";
+import { Component, OnInit, ViewChild, inject } from "@angular/core";
 import { LoaderComponent } from "../../components/loader/loader.component";
 import { PaginationComponent } from "../../components/pagination/pagination.component";
 import { ProductFormComponent } from "../../components/products/product-form/product-form.component";
@@ -26,7 +26,7 @@ import { ModalComponent } from "../../components/modal/modal.component";
     templateUrl: './product.component.html',
     styleUrls: ['./product.component.scss']
 })
-export class ProductComponent {
+export class ProductComponent implements OnInit {
     public productService: ProductService = inject(ProductService);
     public modalService: ModalService = inject(ModalService);
     public route: ActivatedRoute = inject(ActivatedRoute);
@@ -44,6 +44,9 @@ export class ProductComponent {
     constructor() {
         this.productService.search.page = 1;
         this.authService.isSuperAdmin() ? this.productService.getAll() : this.productService.getAllByUser();
+    }
+    ngOnInit(): void {
+        throw new Error("Method not implemented.");
     }
 
     saveProduct(product: IProduct) {

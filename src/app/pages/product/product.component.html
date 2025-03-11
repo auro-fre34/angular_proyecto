@@ -12,7 +12,7 @@
             [product]="productService.products$()" />
     </div>
     @if(productService.products$().length) {
-    <app-pagination [service]="ordersService" [customCall]="true"
+    <app-pagination [service]="productService" [customCall]="true"
         (callCustomPaginationMethod)="authService.isSuperAdmin() ? productService.getAll(): productService.getAllByUser()" />
     }
 </div>

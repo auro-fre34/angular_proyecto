@@ -7,16 +7,17 @@
             <th scope="col">Description</th>
             <th scope="col">Price</th>
             <th scope="col">Stock</th>
+
         </tr>
     </thead>
     <tbody>
         @for (item of product; track $index) {
         <tr>
-            <th scope="row">{{item.id}}</th>
-            <td>{{item.name}}</td>
-            <td>{{item.description}}</td>
-            <td>{{item.price}}</td>
-            <td>{{item.Stock>}}</td>
+            <th scope="row">{{product.id}}</th>
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.stock}}</td>
             <td>
                 <button (click)="callModalAction.emit(item);" class="btn btn-warning me-2" type="button"><i
                         class="fas fa-pen"></i></button>

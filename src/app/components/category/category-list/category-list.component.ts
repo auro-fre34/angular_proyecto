@@ -10,7 +10,7 @@ import { ICategory } from "../../../interfaces";
 })
 export class CategoryListComponent {
     @Input() title: string = '';
-    @Input() produt: ICategory[] = [];
+    @Input() product: ICategory[] = [];
     @Output() callModalAction: EventEmitter<ICategory> = new EventEmitter<ICategory>();
     @Output() callDeleteAction: EventEmitter<ICategory> = new EventEmitter<ICategory>();
 }

@@ -10,7 +10,7 @@ import { IProduct } from '../../../interfaces';
 })
 export class ProductListComponent {
     @Input() title: string = '';
-    @Input() produt: IProduct[] = [];
+    @Input() product: IProduct[] = [];
     @Output() callModalAction: EventEmitter<IProduct> = new EventEmitter<IProduct>();
     @Output() callDeleteAction: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 }

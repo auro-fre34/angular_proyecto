@@ -10,7 +10,7 @@ import { AlertService } from './alert.service';
 export class ProductService extends BaseService<IProduct> {
     protected override source: string = 'products';
     private productListSignal = signal<IProduct[]>([])
-    get produts$() {
+    get products$() {
         return this.productListSignal;
     }
     public search: ISearch = {
