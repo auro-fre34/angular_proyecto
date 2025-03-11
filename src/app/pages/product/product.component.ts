@@ -10,6 +10,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { ModalService } from '../../services/modal.service';
 import { ModalComponent } from "../../components/modal/modal.component";
+import { CommonModule } from "@angular/common";
 
 
 @Component({
@@ -21,6 +22,7 @@ import { ModalComponent } from "../../components/modal/modal.component";
         PaginationComponent,
         ModalComponent,
         LoaderComponent,
+        CommonModule
     ],
     templateUrl: './product.component.html',
     styleUrls: ['./product.component.scss']
