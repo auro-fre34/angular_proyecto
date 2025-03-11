@@ -13,10 +13,10 @@
             <td>{{category.name}}</td>
             <td>{{category.description}}</td>
             <td>
-                <button (click)="callModalAction.emit(category);" class="btn btn-warning me-2" type="button"><i
-                        class="fas fa-pen"></i></button>
-                <button (click)="callDeleteAction.emit(category)" class="btn btn-danger" type="button"><i
-                        class="fas fa-trash"></i></button>
+                <button *ngIf="isSuperAdmin()" (click)="callModalAction.emit(category);" class="btn btn-warning me-2"
+                    type="button"><i class="fas fa-pen"></i></button>
+                <button *ngIf="isSuperAdmin()" (click)="callDeleteAction.emit(category)" class="btn btn-danger"
+                    type="button"><i class="fas fa-trash"></i></button>
             </td>
         </tr>
         }@empty {

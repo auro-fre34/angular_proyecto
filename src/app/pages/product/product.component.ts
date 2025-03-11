@@ -38,11 +38,23 @@ export class ProductComponent {
         description: ['', Validators.required],
         price: ['', Validators.required],
         stock: ['', Validators.required],
-
+        category_id: ['', Validators.required]
     })
+
+    userRole: string = 'USER';
     constructor() {
         this.productService.search.page = 1;
-        this.authService.isSuperAdmin() ? this.productService.getAll() : this.productService.getAllByUser();
+        this.productService.getAll();
+
+        const userData = localStorage.getItem('auth_user');
+        if (userData) {
+            const userObj = JSON.parse(userData);
+            this.userRole = userObj.role?.name || 'USER';
+        }
+    }
+
+    isSuperAdmin(): boolean {
+        return this.userRole === 'SUPER_ADMIN';
     }
 
     saveProduct(product: IProduct) {
@@ -56,6 +68,7 @@ export class ProductComponent {
         this.productForm.controls['description'].setValue(product.description ? product.description : '');
         this.productForm.controls['price'].setValue(product.price ? JSON.stringify(product.price) : '');
         this.productForm.controls['stock'].setValue(product.stock ? JSON.stringify(product.stock) : '');
+        this.productForm.controls['category_id'].setValue(product.category_id ? JSON.stringify(product.category_id) : '');
         this.modalService.displayModal('md', this.addProductModal);
     }
 
@@ -63,5 +76,7 @@ export class ProductComponent {
         this.productService.update(product);
         this.modalService.closeAll();
     }
+
+
 }
 

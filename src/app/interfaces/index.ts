@@ -5,6 +5,8 @@ export interface ILoginResponse {
 
 export interface IResponse<T> {
   data: T;
+  message: string,
+  meta: T
 }
 
 export interface IUser {
@@ -80,7 +82,8 @@ export interface IProduct {
   description?: string;
   price?: number;
   stock?: number;
-  category?: ICategory;
+  category_id?: number;
+  // category?: ICategory;
 }
 
 export interface ICategory {

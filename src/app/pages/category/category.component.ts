@@ -9,6 +9,7 @@ import { AuthService } from "../../services/auth.service";
 import { ModalService } from "../../services/modal.service";
 import { ICategory } from "../../interfaces";
 import { CategoryListComponent } from "../../components/category/category-list/category-list.component";
+import { CommonModule } from "@angular/common";
 
 @Component({
     standalone: true,
@@ -19,7 +20,8 @@ import { CategoryListComponent } from "../../components/category/category-list/c
         ModalComponent,
         LoaderComponent,
         CategoryFormComponent,
-        CategoryListComponent
+        CategoryListComponent,
+        CommonModule
     ],
     templateUrl: './category.component.html',
     styleUrls: ['./category.component.scss']
@@ -34,13 +36,24 @@ export class CategoryComponent {
         id: [''],
         name: ['', Validators.required],
         description: ['', Validators.required],
-        total: ['', Validators.required],
+
     })
 
+    userRole: string = 'USER';
     constructor() {
         this.categoryService.search.page = 1;
         this.categoryService.getAll();
+
+        const userData = localStorage.getItem('auth_user');
+        if (userData) {
+            const userObj = JSON.parse(userData);
+            this.userRole = userObj.role?.name || 'USER';
+        }
     }
+    isSuperAdmin(): boolean {
+        return this.userRole === 'SUPER_ADMIN';
+    }
+
     saveCategory(category: ICategory) {
         this.categoryService.save(category);
         this.modalService.closeAll();

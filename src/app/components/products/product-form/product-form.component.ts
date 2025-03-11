@@ -21,19 +21,21 @@ export class ProductFormComponent {
   @Output() callUpdateMethod: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 
   callSave() {
-    let product: IProduct = {
+    let item: IProduct = {
       name: this.productForm.controls['name'].value,
       description: this.productForm.controls['description'].value,
       price: this.productForm.controls['price'].value,
       stock: this.productForm.controls['stock'].value,
-    }
-    if (this.productForm.controls['id'].value) {
-      product.id = this.productForm.controls['id'].value;
+    };
+    (item as any).category = { id: this.productForm.controls['category_id'].value };
 
-    } if (product.id) {
-      this.callUpdateMethod.emit(product);
+    if (this.productForm.controls['id'].value) {
+      item.id = this.productForm.controls['id'].value;
+
+    } if (item.id) {
+      this.callUpdateMethod.emit(item);
     } else {
-      this.callSaveMethod.emit(product)
+      this.callSaveMethod.emit(item)
     }
   }
 }

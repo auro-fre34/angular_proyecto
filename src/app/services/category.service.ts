@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from './base-service';
-import { ICategory, ISearch } from '../interfaces';
+import { ICategory, IResponse, ISearch } from '../interfaces';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
 
@@ -50,14 +50,14 @@ export class CategoryService extends BaseService<ICategory> {
         });
     }
 
-    save(category: ICategory) {
-        this.addCustomSource(`user/${this.authService.getUser()?.id}`, category).subscribe({
-            next: (response: any) => {
+    save(item: ICategory) {
+        this.add(item).subscribe({
+            next: (response: IResponse<ICategory>) => {
                 this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-                this.getAllByUser();
+                this.getAll();
             },
             error: (err: any) => {
-                this.alertService.displayAlert('error', 'An error occurred adding the category', 'center', 'top', ['error-snackbar']);
+                this.alertService.displayAlert('error', 'An error occurred adding category', 'center', 'top', ['error-snackbar']);
                 console.error('error', err);
             }
         });
