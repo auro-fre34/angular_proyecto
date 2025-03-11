@@ -9,8 +9,11 @@ import { IProduct } from '../../../interfaces';
     styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
-    @Input() title: string = '';
-    @Input() product: IProduct[] = [];
+    @Input() name: string = '';
+    @Input() description: string = '';
+    @Input() price: number = 0;
+    @Input() stock: number = 0;
+    @Input() products: IProduct[] = [];
     @Output() callModalAction: EventEmitter<IProduct> = new EventEmitter<IProduct>();
     @Output() callDeleteAction: EventEmitter<IProduct> = new EventEmitter<IProduct>();
 }

@@ -15,8 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class CategoryFormComponent {
     public fb: FormBuilder = inject(FormBuilder);
-    @Input()
-    categoryForm!: FormGroup;
+    @Input() categoryForm!: FormGroup;
     @Output() callSaveMethod: EventEmitter<ICategory> = new EventEmitter<ICategory>();
     @Output() callUpdateMethod: EventEmitter<ICategory> = new EventEmitter<ICategory>();
 

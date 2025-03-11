@@ -9,11 +9,10 @@
     </div>
     <div class="col-12">
         <app-category-list (callModalAction)="callEdition($event)" (callDeleteAction)="categoryService.delete($event)"
-            [category]="categoryService.category$()" />
+            [categories]="categoryService.category$()" />
     </div>
-    @if(categoryService.category$().length) {
-    <app-pagination [service]="categoryService" [customCall]="true"
-        (callCustomPaginationMethod)="authService.isSuperAdmin() ? categoryService.getAll(): categoryService.getAllByUser()" />
+    @if(categoryService.category$() && categoryService.category$().length) {
+    <app-pagination [service]="categoryService" />
     }
 </div>
 } @loading (minimum 1.5s) {
@@ -22,7 +21,7 @@
 <ng-template #addCategoryModal>
     <app-modal [hideFooter]="true">
         <div>
-            <app-category-form [orderForm]="categoryForm" (callSaveMethod)="saveCategory($event)"
+            <app-category-form [categoryForm]="categoryForm" (callSaveMethod)="saveCategory($event)"
                 (callUpdateMethod)="updateCategory($event)" />
         </div>
     </app-modal>

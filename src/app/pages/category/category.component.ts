@@ -8,6 +8,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { ModalService } from "../../services/modal.service";
 import { ICategory } from "../../interfaces";
+import { CategoryListComponent } from "../../components/category/category-list/category-list.component";
 
 @Component({
     standalone: true,
@@ -17,7 +18,8 @@ import { ICategory } from "../../interfaces";
         PaginationComponent,
         ModalComponent,
         LoaderComponent,
-        CategoryFormComponent
+        CategoryFormComponent,
+        CategoryListComponent
     ],
     templateUrl: './category.component.html',
     styleUrls: ['./category.component.scss']
@@ -37,9 +39,9 @@ export class CategoryComponent {
 
     constructor() {
         this.categoryService.search.page = 1;
-        this.authService.isSuperAdmin() ? this.categoryService.getAll() : this.categoryService.getAllByUser();
+        this.categoryService.getAll();
     }
-    saveOrder(category: ICategory) {
+    saveCategory(category: ICategory) {
         this.categoryService.save(category);
         this.modalService.closeAll();
     }
@@ -50,7 +52,7 @@ export class CategoryComponent {
         this.modalService.displayModal('md', this.addCategoryModal);
     }
 
-    updateOrder(category: ICategory) {
+    updateCategory(category: ICategory) {
         this.categoryService.update(category);
         this.modalService.closeAll();
     }

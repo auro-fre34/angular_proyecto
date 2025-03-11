@@ -13,7 +13,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { GamesComponent } from './pages/games/games.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ProductComponent } from './pages/product/product.component';
-import { CategoryComponent } from '@ctrl/ngx-emoji-mart';
+import { CategoryComponent } from './pages/category/category.component';
+
 
 export const routes: Routes = [
   {

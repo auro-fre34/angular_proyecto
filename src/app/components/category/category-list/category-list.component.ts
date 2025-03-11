@@ -9,8 +9,9 @@ import { ICategory } from "../../../interfaces";
     styleUrl: './category-list.component.scss'
 })
 export class CategoryListComponent {
-    @Input() title: string = '';
-    @Input() category: ICategory[] = [];
+    @Input() name: string = '';
+    @Input() description: string = '';
+    @Input() categories: ICategory[] = [];
     @Output() callModalAction: EventEmitter<ICategory> = new EventEmitter<ICategory>();
     @Output() callDeleteAction: EventEmitter<ICategory> = new EventEmitter<ICategory>();
 }

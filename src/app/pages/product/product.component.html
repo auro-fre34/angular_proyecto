@@ -9,7 +9,7 @@
     </div>
     <div class="col-12">
         <app-product-list (callModalAction)="callEdition($event)" (callDeleteAction)="productService.delete($event)"
-            [product]="productService.products$()" />
+            [products]="productService.products$()" />
     </div>
     @if(productService.products$().length) {
     <app-pagination [service]="productService" [customCall]="true"
