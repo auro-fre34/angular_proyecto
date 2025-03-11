@@ -26,7 +26,7 @@ export class CategoryComponent {
     public categoryService: CategoryService = inject(CategoryService);
     public modalService: ModalService = inject(ModalService);
     public authService: AuthService = inject(AuthService);
-    @ViewChild('addCategoryModal') public addD: any;
+    @ViewChild('addCategoryModal') public addCategoryModal: any;
     public fb: FormBuilder = inject(FormBuilder);
     categoryForm = this.fb.group({
         id: [''],
@@ -37,7 +37,7 @@ export class CategoryComponent {
 
     constructor() {
         this.categoryService.search.page = 1;
-        this.authService.isSuperAdmin() ? this.categoryService.getAll() : this.categoryService.getAll();
+        this.authService.isSuperAdmin() ? this.categoryService.getAll() : this.categoryService.getAllByUser();
     }
     saveOrder(category: ICategory) {
         this.categoryService.save(category);

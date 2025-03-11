@@ -1,46 +1,16 @@
-import { CategoryService } from '../../../services/category.service';
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { ICategory } from '../../../interfaces';
-import { CommonModule } from '@angular/common';
-import { ModalComponent } from '../../modal/modal.component';
-import { CategoryFormComponent } from '../category-form/category-form.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { ICategory } from "../../../interfaces";
 
 @Component({
     selector: 'app-category-list',
     standalone: true,
-    imports: [
-        CommonModule,
-        ModalComponent,
-        CategoryFormComponent
-    ],
+    imports: [],
     templateUrl: './category-list.component.html',
     styleUrl: './category-list.component.scss'
 })
-export class CategoryListComponent implements OnChanges {
-    @Input() itemList: ICategory[] = [];
-    @Input() areActionsAvailable: boolean = false;
-    public selectedItem: ICategory = {};
-    private categoryService = inject(CategoryService);
-    public modalService = inject(NgbModal);
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['areActionsAvailable']) {
-            console.log('areActionsAvailable', this.areActionsAvailable);
-        }
-    }
-
-    showDetailModal(item: ICategory, modal: any) {
-        this.selectedItem = { ...item };
-        modal.show();
-    }
-
-    onFormEventCalled(params: ICategory) {
-        this.categoryService.update(params);
-        this.modalService.dismissAll();
-    }
-
-    deleteCategory(category: ICategory) {
-        this.categoryService.delete(category);
-    }
+export class CategoryListComponent {
+    @Input() title: string = '';
+    @Input() produt: ICategory[] = [];
+    @Output() callModalAction: EventEmitter<ICategory> = new EventEmitter<ICategory>();
+    @Output() callDeleteAction: EventEmitter<ICategory> = new EventEmitter<ICategory>();
 }

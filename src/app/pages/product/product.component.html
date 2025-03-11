@@ -22,7 +22,7 @@
 } <ng-template #addProductModal>
     <app-modal [hideFooter]="true">
         <div>
-            <app-orders-form [productForm]="productForm" (callSaveMethod)="saveProduct($event)"
+            <app-product-form [productForm]="productForm" (callSaveMethod)="saveProduct($event)"
                 (callUpdateMethod)="updateProduct($event)" />
         </div>
     </app-modal>
